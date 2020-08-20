@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 @RestController
@@ -16,7 +15,6 @@ class CrudController @Autowired constructor(
 ) {
 
     private val counter = AtomicLong()
-    private val personId = AtomicInteger()
 
     @GetMapping("/crud")
     fun greeting(@RequestParam(value = "name", defaultValue = "World") name: String) =
@@ -24,8 +22,9 @@ class CrudController @Autowired constructor(
 
     @PostMapping("/add-person")
     fun addPerson(@RequestParam(value = "name", defaultValue = "Vojta") name: String) {
-        val person = Person(personId.incrementAndGet(), name)
-        personRepository.save(person)
+        val person = Person(name = name)
+        val createdPerson: Person = personRepository.save(person)
+        println("added person $createdPerson")
     }
 
     @GetMapping("/get-persons")
