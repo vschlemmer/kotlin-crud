@@ -7,7 +7,7 @@ data class Person (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
+    val id: Long? = null,
 
     @Column(nullable = false)
     val name: String
