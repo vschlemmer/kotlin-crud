@@ -10,5 +10,5 @@ data class Person (
     val id: Long? = null,
 
     @Column(nullable = false)
-    val name: String
+    var name: String
 )

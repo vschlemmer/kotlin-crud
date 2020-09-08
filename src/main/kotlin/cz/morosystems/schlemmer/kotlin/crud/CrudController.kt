@@ -11,19 +11,27 @@ class PersonController @Autowired constructor(
         private val personRepository: PersonRepository
 ) {
 
-    @PostMapping
-    fun addPerson(@RequestParam(value = "name", defaultValue = "Unnamed") name: String) {
-        personRepository.save(Person(name = name))
-    }
-
     @GetMapping
-    fun getPersons(): List<Person> {
+    fun getAll(): List<Person> {
         return personRepository.findAll()
     }
 
     @GetMapping("/{personId}")
-    fun getPerson(@PathVariable(name = "personId") personId: Long): Person? {
+    fun get(@PathVariable(name = "personId") personId: Long): Person? {
         return personRepository.findById(personId)
                 .orElse(null)
+    }
+
+    @PostMapping
+    fun add(@RequestParam(value = "name", defaultValue = "Unnamed") name: String) {
+        personRepository.save(Person(name = name))
+    }
+
+    @PutMapping("/{personId}")
+    fun update(@PathVariable(name = "personId") personId: Long, @RequestParam(value = "name", defaultValue = "Unnamed") name: String) {
+        personRepository.findById(personId).ifPresent {
+            it.name = name
+            personRepository.save(it)
+        }
     }
 }
